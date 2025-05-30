@@ -43,3 +43,15 @@ TreeNode *insertInBST(TreeNode *root, int val)
     }
     return root;
 }
+
+TreeNode* insertInBSTRec(TreeNode* root, int val){
+    if(root == NULL){
+        return new TreeNode(val);
+    }
+    if(root->data > val){
+        root->right = insertInBSTRec(root->right, val);
+    }
+    else root->left = insertInBSTRec(root->left, val);
+
+    return root;
+}
