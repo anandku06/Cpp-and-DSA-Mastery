@@ -22,10 +22,12 @@ class Solution {
         int count, maxCount = 0;
 
         for(int i : nums) {
-            if(i == 1) count++;
+            if(i == 1) {
+                count++;
+                maxCount = max(count, maxCount);
+            }
             else count = 0;
 
-            maxCount = max(count, maxCount);
         }
 
         return maxCount;
