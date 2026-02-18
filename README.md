@@ -11,4 +11,9 @@
 |  |
 | ------- |
 | [0034-find-first-and-last-position-of-element-in-sorted-array](https://github.com/anandku06/Cpp-and-DSA-Mastery/tree/master/0034-find-first-and-last-position-of-element-in-sorted-array) |
+| [0278-first-bad-version](https://github.com/anandku06/Cpp-and-DSA-Mastery/tree/master/0278-first-bad-version) |
+## Interactive
+|  |
+| ------- |
+| [0278-first-bad-version](https://github.com/anandku06/Cpp-and-DSA-Mastery/tree/master/0278-first-bad-version) |
 <!---LeetCode Topics End-->
