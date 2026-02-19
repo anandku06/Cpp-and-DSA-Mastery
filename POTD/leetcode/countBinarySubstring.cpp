@@ -4,8 +4,6 @@
 
 // Substrings that occur multiple times are counted the number of times they occur.
 
- 
-
 // Example 1:
 
 // Input: s = "00110011"
@@ -18,10 +16,37 @@
 // Input: s = "10101"
 // Output: 4
 // Explanation: There are 4 substrings: "10", "01", "10", "01" that have equal number of consecutive 1's and 0's.
- 
 
 // Constraints:
 
 // 1 <= s.length <= 105
 // s[i] is either '0' or '1'.
 
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution
+{
+public:
+    int countBinarySubstrings(string s)
+    {
+        int n = s.size();
+
+        int result = 0, prev = 0, curr = 1;
+        for (int i = 1; i < n; i++)
+        {
+            if (s[i - 1] != s[i])
+            {
+                result += min(prev, curr);
+                prev = curr;
+                curr = 1;
+            }
+            else
+            {
+                curr++;
+            }
+        }
+
+        return result + min(prev, curr);
+    }
+};
