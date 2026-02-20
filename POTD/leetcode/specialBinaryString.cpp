@@ -21,6 +21,15 @@
 // Input: s = "10"
 // Output: "10"
 
+// intuition:
+// The idea is to recursively find all the special substrings in the input string, sort them in descending order, and then concatenate them to form the final result.
+
+// algorithm:
+// 1. Initialize an empty vector to store the special substrings.
+// 2. Iterate through the input string and keep track of the count of '1's and '0's. Whenever the count of '1's equals the count of '0's, we have found a special substring.
+// 3. For each special substring found, recursively call the function to find any nested special substrings within it, and then store the result in the vector.
+// 4. After finding all the special substrings, sort them in descending order.
+
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -57,3 +66,6 @@ public:
         return res;
     }
 };
+
+// Time complexity: O(n^2) in the worst case, where n is the length of the input string s. This is because we may need to sort the special substrings, and in the worst case, there could be O(n) special substrings, each of length O(n).
+// Space complexity: O(n) in the worst case, where n is the length of the input string s. This is because we may need to store all the special substrings in a vector, and in the worst case, there could be O(n) special substrings, each of length O(n).
