@@ -40,4 +40,20 @@ public:
             nums[i] = 0;
         }
     }
+
+    // we can use two pointers, one to keep track of the current index and the other to keep track of the last non-zero element. We can iterate through the array and whenever we find a non-zero element, we can swap it with the last non-zero element and update the last non-zero element index. This way we can move all the non-zero elements to the front of the array and fill the remaining with zeros.
+    void moveZerosOptimal(vector<int> &nums)
+    {
+        int lastNonZero = 0; // pointer to keep track of the last non-zero element
+
+        for (int i = 0; i < nums.size(); i++)
+        {
+            // if the current element is non-zero, swap it with the last non-zero element and update the last non-zero element index
+            if (nums[i] != 0)
+            {
+                swap(nums[i], nums[lastNonZero]);
+                lastNonZero++;
+            }
+        }
+    }
 };

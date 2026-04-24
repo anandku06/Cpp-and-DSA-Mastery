@@ -60,4 +60,17 @@ public:
 
         return i + 1; // return the first i elements as they are unique
     }
+
+    int removeDuplicatesBrute(vector<int> &nums)
+    {
+        // we can use a set to store the unique elements and then copy them back to the original array. This will take O(n) time and O(n) space.
+        set<int> uniqueElements(nums.begin(), nums.end());
+        int k = uniqueElements.size();
+        int i = 0;
+        for (int element : uniqueElements)
+        {
+            nums[i++] = element;
+        }
+        return k;
+    }
 };
