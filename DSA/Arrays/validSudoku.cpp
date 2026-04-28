@@ -57,6 +57,9 @@ using namespace std;
 class Solution
 {
 public:
+    /*
+    This approach uses bit manipulation to store the values of each row, column and box in a single integer. Each bit in the integer represents a number from 1 to 9, and if the bit is set, it means that the number is present in that row, column or box. We iterate through each cell in the board, and for each filled cell, we create a bitmask for the current number and check if it is already set in any of the row, column or box. If it is set, then we can say that the sudoku is not valid. If it is not set, then we set the bitmask for the current number in the row, column and box. Finally, if we have checked all the cells and found no duplicates, then we can say that the sudoku is valid.
+    */
     bool approach_3(vector<vector<char>> &board)
     {
         int rows[9] = {0};  // to store the values of each row
@@ -128,7 +131,3 @@ public:
         return true; // if we have checked all the cells and found no duplicates, then the sudoku is valid
     }
 };
-
-/*
-This approach uses bit manipulation to store the values of each row, column and box in a single integer. Each bit in the integer represents a number from 1 to 9, and if the bit is set, it means that the number is present in that row, column or box. We iterate through each cell in the board, and for each filled cell, we create a bitmask for the current number and check if it is already set in any of the row, column or box. If it is set, then we can say that the sudoku is not valid. If it is not set, then we set the bitmask for the current number in the row, column and box. Finally, if we have checked all the cells and found no duplicates, then we can say that the sudoku is valid.
-*/
