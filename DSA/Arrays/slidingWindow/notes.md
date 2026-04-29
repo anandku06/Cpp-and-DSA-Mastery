@@ -169,3 +169,71 @@ int main() {
     return 0;
 }
 ```
+
+### all_of algorithm
+
+- The `all_of` algorithm is a standard library function in C++ that checks if all elements in a given range satisfy a specific condition. It takes three parameters: the beginning of the range, the end of the range, and a predicate function that defines the condition to be checked.
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    vector<int> arr = {2, 4, 6, 8, 10}; // Example array
+
+    // Check if all elements in the array are even
+    bool allEven = all_of(arr.begin(), arr.end(), [](int x) {
+        return x % 2 == 0; // Predicate to check if the element is even
+    });
+
+    if (allEven) {
+        cout << "All elements are even." << endl;
+    } else {
+        cout << "Not all elements are even." << endl;
+    }
+
+    return 0;
+}
+```
+
+- In this example, the `all_of` function checks if all elements in the `arr` vector are even. The lambda function `[](int x) { return x % 2 == 0; }` serves as the predicate that returns true if the element is even and false otherwise. The result is printed to the console based on whether all elements satisfy the condition.
+
+## Monotonic Increasing/Decreasing
+
+- A monotonic increasing sequence is a sequence of numbers where each number is greater than or equal to the previous one. Conversely, a monotonic decreasing sequence is one where each number is less than or equal to the previous one.
+- In the context of sliding windows, we can maintain a monotonic queue (or deque) to efficiently track the maximum or minimum values within the current window. This allows us to quickly determine the maximum or minimum value in O(1) time after O(n) preprocessing.
+
+```cpp
+#include <iostream>
+#include <deque>
+using namespace std;
+
+void maxSlidingWindow(vector<int>& nums, int k) {
+    deque<int> dq; // Deque to store indices of elements
+    for (int i = 0; i < nums.size(); i++) {
+        // Remove indices that are out of the current window
+        while (!dq.empty() && dq.front() < i - k + 1) {
+            dq.pop_front();
+        }
+        // Remove indices whose corresponding values are less than nums[i]
+        while (!dq.empty() && nums[dq.back()] < nums[i]) {
+            dq.pop_back();
+        }
+        // Add the current index to the deque
+        dq.push_back(i);
+        // The front of the deque is the largest element in the current window
+        if (i >= k - 1) {
+            cout << "Maximum in window ending at index " << i << ": " << nums[dq.front()] << endl;
+        }
+    }
+}
+
+int main() {
+    vector<int> nums = {1, 3, -1, -3, 5, 3, 6, 7}; // Example array
+    int k = 3; // Window size
+    maxSlidingWindow(nums, k);
+    return 0;
+}
+```
