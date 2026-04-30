@@ -106,3 +106,10 @@ public:
         return result;
     }
 };
+
+/**
+ * When new element comes, we make space for it by removing the smaller elements from the back of the deque. 
+ * Now, when nums[i] comes, there is no need to keep small elements in that window, pop them
+ * Now push i in deque -> for nums[i]
+ * if(i >= k - 1) -> we have formed a valid window, so we can add the maximum element to the result
+ */
