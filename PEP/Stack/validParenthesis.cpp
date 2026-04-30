@@ -48,7 +48,9 @@
 // 1 <= s.length <= 104
 // s consists of parentheses only '()[]{}'.
 
-// using a hashmap to store the sequences of the bracket annd checking with the stack
+// approach: Using a Stack
+// Intuition
+// We can use a stack to keep track of the opening brackets. Whenever we encounter an opening bracket, we push it onto the stack. Whenever we encounter a closing bracket, we check if the top of the stack is the corresponding opening bracket. If it is, we pop the top of the stack and continue checking. If it is not, then the string is not valid. At the end, if the stack is empty, then the string is valid; otherwise, it is not valid.
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -60,25 +62,32 @@ public:
     {
         stack<char> st;
 
+        // creating a mapping of the closing brackets to their corresponding opening brackets
         unordered_map<char, char> mapping = {
             {')', '('},
             {']', '['},
             {'}', '{'}};
 
+        // iterating through the string and checking if the current character is a closing bracket
         for (char c : s)
         {
+            // if the current character is a closing bracket, we check if the top of the stack is the corresponding opening bracket
             if (mapping.count(c))
             {
+                // if the stack is empty, we assign a dummy value to topEl to avoid accessing the top of an empty stack
                 char topEl = st.empty() ? '#' : st.top();
 
+                // if the top of the stack is the corresponding opening bracket, we pop the top of the stack; otherwise, we return false
                 if (!st.empty())
                     st.pop();
-
+                
+                // if the top of the stack is not the corresponding opening bracket, we return false
                 if (topEl != mapping[c])
                 {
                     return false;
                 }
             }
+            // if the current character is an opening bracket, we push it onto the stack
             else
             {
                 st.push(c);
