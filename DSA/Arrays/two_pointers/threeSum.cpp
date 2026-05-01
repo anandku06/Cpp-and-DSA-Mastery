@@ -45,7 +45,7 @@ public:
     vector<vector<int>> threeSum(vector<int> &nums)
     {
         // sorting the nums
-        sort(nums.begin(), nums.end());
+        sort(nums.begin(), nums.end()); // to avoid duplicate triplets, we can sort the array and then skip the same element
 
         vector<vector<int>> ans; // to store the triplets
 
