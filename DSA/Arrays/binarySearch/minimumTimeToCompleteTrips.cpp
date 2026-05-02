@@ -53,9 +53,12 @@ public:
         for (int i = 0; i < time.size(); i++)
         {
             trips += t / time[i]; // calculate the number of trips completed by the ith bus within time t and add it to the total trips
+
+            if(trips >= totalTrips) // if the total number of trips completed is already greater than or equal to totalTrips, we can return true
+                return true;
         }
 
-        return trips >= totalTrips; // check if the total number of trips completed is at least totalTrips
+        return false; // if the total number of trips completed is less than totalTrips, we return false
     }
 
     long long minimumTime(vector<int> &time, int totalTrips)
