@@ -21,6 +21,7 @@
 
 // approach: Initialise two pointers, fast that moves two steps at a time, and one slow that moves one step.
 //              if, fast or fast->next moves to the end of the list (nullptr), then slow has to be on the middle
+//              If the number of node are odd, then there will be only one middle node and slow will be on that node, if the number of nodes are even, then there will be two middle nodes and slow will be on the second middle node. and fast will be on the last node in the list.
 
 struct ListNode {
     int data;
