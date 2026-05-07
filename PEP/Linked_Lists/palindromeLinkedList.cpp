@@ -94,8 +94,12 @@ public:
         if (head == nullptr)
             return true; // base case: if head is nullptr, then it is a palindrome
 
-        if (!solve(head->next) || head->data != curr->data) // recursive call to check the rest of the list and compare the current node's value with the value of the node pointed by curr
-            return false;                                   // if the recursive call returns false or the values are not equal, then it is not a palindrome
+        // why? Agar kisi deeper level pe palindrome mismatch mil gaya aur false return hua, to upar wale recursive calls ko bhi immediately false return karna chahiye. Isliye, agar solve(head->next) false return karta hai, to hum directly false return kar denge bina aage ke code ko execute kiye.
+        if (!solve(head->next))
+            return false;
+
+        if (head->data != curr->data) // recursive call to check the rest of the list and compare the current node's value with the value of the node pointed by curr
+            return false;             // if the recursive call returns false or the values are not equal, then it is not a palindrome
 
         curr = curr->next; // move the curr pointer to the next node in the original order
         return true;       // if we have traversed the entire list and all values are equal, then it is a palindrome

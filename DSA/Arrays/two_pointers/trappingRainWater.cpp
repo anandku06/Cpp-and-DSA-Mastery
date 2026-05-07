@@ -38,7 +38,6 @@ public:
 
         while (left < right)
         {
-            // if the left height is less than the right height, then the water trapped will be determined by the left height, and if the left height is greater than or equal to the left max, then we update the left max, otherwise we add the water trapped to the answer, and we move the left pointer to the right, and if the right height is less than or equal to the right max, then we update the right max, otherwise we add the water trapped to the answer, and we move the right pointer to the left.
             if (height[left] < height[right]) // if the left height is less than the right height, then the water trapped will be determined by the left height, and if the left height is greater than or equal to the left max, then we update the left max, otherwise we add the water trapped to the answer, and we move the left pointer to the right, and if the right height is less than or equal to the right max, then we update the right max, otherwise we add the water trapped to the answer, and we move the right pointer to the left.
             {
                 if (height[left] >= leftMax)
