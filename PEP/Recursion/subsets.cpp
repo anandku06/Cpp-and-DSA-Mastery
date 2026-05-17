@@ -29,10 +29,10 @@ public:
             return;
         }
 
-        solve(nums, temp, res, i + 1); // not-picking the current element and moving to the next element
         temp.push_back(nums[i]);       // picking the current element and moving to the next element
-        solve(nums, temp, res, i + 1); // after picking the current element, we need to backtrack and remove it from the temp array before moving to the next element
-        temp.pop_back();               // backtracking step, removing the last element from the temp array to explore other combinations without the current element
+        solve(nums, temp, res, i + 1); // after picking the current element, we need to backtrack and remove it from the temp array before moving to the next element. This way, we can explore other combinations without the current element.
+        temp.pop_back();               // backtracking step, removing the last element from the temp array to explore other combinations without the current element. This is necessary to ensure that we can explore all possible subsets, including those that do not include the current element, and to prevent generating duplicate subsets.
+        solve(nums, temp, res, i + 1); // not-picking the current element and moving to the next element
     }
 
     vector<vector<int>> subsets(vector<int> &nums)
