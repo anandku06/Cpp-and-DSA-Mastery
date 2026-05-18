@@ -28,6 +28,7 @@ using namespace std;
 class Solution
 {
 public:
+    // Helper function to check if a substring is a palindrome
     bool isPalindrome(string s, int st, int end)
     {
         while (st <= end)
@@ -49,9 +50,13 @@ public:
 
         for (int i = st; i < s.size(); i++)
         {
-            temp.push_back(s.substr(st, i - st + 1));
-            getAllParts(s, i + 1, ans, temp);
-            temp.pop_back();
+            // Check if the substring from index st to i is a palindrome
+            if (isPalindrome(s, st, i))
+            {
+                temp.push_back(s.substr(st, i - st + 1)); // If it is a palindrome, add it to the current partition
+                getAllParts(s, i + 1, ans, temp);         // Recursively process the remaining substring starting from index i + 1
+                temp.pop_back();                          // Backtrack by removing the last added substring to explore other possibilities
+            }
         }
     }
 
