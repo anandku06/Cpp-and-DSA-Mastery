@@ -64,3 +64,53 @@ public:
         return false; // if we don't find any cycle in the graph, we will return false
     }
 };
+
+// approach: we can also use Kahn's algorithm for topological sort to detect a cycle in a directed graph. If we are able to perform a topological sort on the graph, then there is no cycle in the graph. If we are not able to perform a topological sort on the graph, then there is a cycle in the graph.
+
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution2
+{
+public:
+    bool isCycle(int V, vector<vector<int>> &edges)
+    {
+        // Implementation for cycle detection using Kahn's algorithm
+        vector<int> indegree(V, 0);          // to store the indegree of each vertex
+        unordered_map<int, vector<int>> adj; // to store the adjacency list
+
+        for (auto &edge : edges)
+        {
+            adj[edge[0]].push_back(edge[1]);
+            indegree[edge[1]]++; // calculate the indegree of each vertex
+        }
+
+        queue<int> q; // to store the vertices with indegree 0
+        for (int i = 0; i < V; i++)
+        {
+            if (indegree[i] == 0)
+            {
+                q.push(i); // add the vertices with indegree 0 to the queue
+            }
+        }
+
+        int count = 0; // to count the number of vertices processed
+        while (!q.empty())
+        {
+            int u = q.front();
+            q.pop();
+            count++; // increment the count of processed vertices
+
+            for (auto &v : adj[u])
+            {
+                indegree[v]--; // decrease the indegree of the neighboring vertices
+                if (indegree[v] == 0)
+                {
+                    q.push(v); // add the neighboring vertices with indegree 0 to the queue
+                }
+            }
+        }
+
+        return count != V; // if the number of processed vertices is not equal to the total number of vertices, then there is a cycle in the graph, otherwise there is no cycle in the graph
+    }
+};
