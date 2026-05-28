@@ -20,6 +20,10 @@
 
 // approach: we can use DFS to detect a cycle in a directed graph. We will keep track of the visited vertices and the vertices in the current path. If we find a vertex that is already in the current path, then we have found a cycle.
 
+// the logic of using a recursion stack (inPath) is to keep track of the vertices that are currently being explored in the DFS. If we encounter a vertex that is already in the recursion stack, it means we have found a back edge, which indicates the presence of a cycle in the directed graph. This is because a back edge points to an ancestor in the DFS tree, creating a loop. By using the inPath vector, we can efficiently detect cycles during our DFS traversal.
+
+// why not using the same visited vector to check for cycles? Because in a directed graph, a vertex can be visited multiple times through different paths. If we only use the visited vector, we might incorrectly identify a cycle when we encounter a vertex that has been visited through a different path. The inPath vector helps us distinguish between vertices that are currently being explored (in the current path) and those that have been fully explored (visited but not in the current path). This way, we can accurately detect cycles without false positives.
+
 #include <bits/stdc++.h>
 using namespace std;
 
