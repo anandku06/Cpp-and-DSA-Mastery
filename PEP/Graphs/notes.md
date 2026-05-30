@@ -223,3 +223,41 @@ vector<int> kahnTopologicalSort(int V, unordered_map<int, vector<int>>& adj_list
 ```
 
 - The time complexity of Kahn's algorithm is O(V + E), where V is the number of vertices and E is the number of edges in the graph. The space complexity is O(V) due to the queue used to store vertices with no incoming edges and the vector used to store the topological order.
+
+## Bipartite Graph:
+
+- A bipartite graph is a graph whose vertices can be divided into two disjoint sets such that no two vertices within the same set are adjacent. In other words, the graph can be colored using two colors without any adjacent vertices sharing the same color.
+
+```cpp
+bool isBipartite(int V, unordered_map<int, vector<int>>& adj_list) {
+    vector<int> color(V, -1); // Vector to store the color of each vertex (-1: uncolored, 0: color 0, 1: color 1)
+
+    for (int i = 0; i < V; i++) {
+        if (color[i] == -1) { // If the vertex is uncolored
+            color[i] = 0; // Color it with color 0
+            queue<int> q; // Queue to perform BFS
+            q.push(i);
+
+            while (!q.empty()) {
+                int node = q.front(); // Get the front node from the queue
+                q.pop(); // Dequeue the front node
+
+                // Check all neighbors of the current node
+                for (int neighbor : adj_list[node]) {
+                    if (color[neighbor] == -1) { // If the neighbor is uncolored
+                        color[neighbor] = 1 - color[node]; // Color it with the opposite color
+                        q.push(neighbor); // Enqueue the neighbor
+                    } else if (color[neighbor] == color[node]) { // If the neighbor has the same color
+                        return false; // The graph is not bipartite
+                    }
+                }
+            }
+        }
+    }
+
+    return true; // The graph is bipartite
+}
+```
+
+- **Tip**: If graph has an odd-length cycle, it cannot be bipartite, as it would require at least three colors to color the vertices without adjacent vertices sharing the same color.
+- The time complexity of checking if a graph is bipartite using BFS is O(V + E), where V is the number of vertices and E is the number of edges in the graph. The space complexity is O(V) due to the queue used for BFS and the vector used to store the color of each vertex.
