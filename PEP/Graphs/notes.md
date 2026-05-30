@@ -261,3 +261,63 @@ bool isBipartite(int V, unordered_map<int, vector<int>>& adj_list) {
 
 - **Tip**: If graph has an odd-length cycle, it cannot be bipartite, as it would require at least three colors to color the vertices without adjacent vertices sharing the same color.
 - The time complexity of checking if a graph is bipartite using BFS is O(V + E), where V is the number of vertices and E is the number of edges in the graph. The space complexity is O(V) due to the queue used for BFS and the vector used to store the color of each vertex.
+
+## DSU (Disjoint Set Union):
+
+- Disjoint Set Union (DSU), also known as Union-Find, is a data structure that keeps track of a partition of a set into disjoint subsets. It provides efficient operations for merging two subsets and finding the representative (or "parent") of a subset.
+
+```cpp
+class DSU {
+private:
+    vector<int> parent; // Vector to store the parent of each element
+    vector<int> rank; // Vector to store the rank (or size) of each subset
+
+public:
+    DSU(int n) {
+        parent.resize(n);
+        rank.resize(n, 0);
+        for (int i = 0; i < n; i++) {
+            parent[i] = i; // Initially, each element is its own parent
+        }
+    }
+
+    int find(int x) {
+        if (parent[x] != x) {
+            parent[x] = find(parent[x]); // Path compression
+        }
+        return parent[x];
+    }
+
+    void unite(int x, int y) {
+        int rootX = find(x);
+        int rootY = find(y);
+
+        if (rootX != rootY) {
+            if (rank[rootX] < rank[rootY]) {
+                parent[rootX] = rootY;
+            } else if (rank[rootX] > rank[rootY]) {
+                parent[rootY] = rootX;
+            } else {
+                parent[rootY] = rootX;
+                rank[rootX]++;
+            }
+        }
+    }
+};
+
+// DSU is commonly used in graph algorithms, such as Kruskal's algorithm for finding the minimum spanning tree and in problems related to connected components and cycle detection in graphs.
+```
+
+- The time complexity of DSU operations (find and unite) is O(α(n)), where α(n) is the inverse Ackermann function, which grows very slowly and is practically constant for all reasonable values of n. The space complexity is O(n) due to the parent and rank vectors used to store the disjoint sets.
+
+### Operations of DSU:
+
+- **Find**: The find operation returns the representative (or "parent") of the subset that a particular element belongs to. It uses path compression to optimize the time complexity of subsequent find operations by flattening the structure of the tree representing the subsets.
+- **Unite**: The unite operation merges two subsets into a single subset. It uses union by rank (or size) to keep the tree representing the subsets balanced, which helps maintain efficient find operations.
+- DSU is particularly useful in scenarios where we need to keep track of connected components in a graph, such as in Kruskal's algorithm for finding the minimum spanning tree, or in problems related to cycle detection and connectivity in graphs.
+- DSU can also be used in problems that involve grouping elements based on certain criteria, such as in clustering algorithms or in problems related to social networks where we want to find connected groups of users.
+
+#### Path Compression and Union by Rank:
+
+- Path compression is a technique used in the find operation of DSU to optimize the time complexity of subsequent find operations. It works by making each node on the path from a given element to the root of its subset point directly to the root, effectively flattening the structure of the tree representing the subsets.
+- Union by rank (or size) is a technique used in the unite operation of DSU to keep the tree representing the subsets balanced. It works by attaching the smaller tree (the one with lower rank or size) under the root of the larger tree (the one with higher rank or size), which helps maintain efficient find operations.
