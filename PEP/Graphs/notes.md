@@ -310,6 +310,9 @@ public:
 
 - The time complexity of DSU operations (find and unite) is O(α(n)), where α(n) is the inverse Ackermann function, which grows very slowly and is practically constant for all reasonable values of n. The space complexity is O(n) due to the parent and rank vectors used to store the disjoint sets.
 
+**Note**:
+We can use DSU to detect cycles in an undirected graph by checking if two vertices belong to the same subset before performing a union operation. But DSU cannot be used to detect cycles in a directed graph, as it does not account for the direction of edges and the possibility of back edges that can create cycles. In directed graphs, cycle detection typically requires algorithms like Depth-First Search (DFS) or Kahn's algorithm for topological sorting.
+
 ### Operations of DSU:
 
 - **Find**: The find operation returns the representative (or "parent") of the subset that a particular element belongs to. It uses path compression to optimize the time complexity of subsequent find operations by flattening the structure of the tree representing the subsets.

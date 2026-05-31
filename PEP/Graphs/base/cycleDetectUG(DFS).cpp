@@ -140,3 +140,85 @@ Space Complexity: O(V + E) for the adjacency list and O(V) for the visited array
 
 - Tracking the parent of each vertex is crucial in cycle detection for undirected graphs, as it helps to differentiate between a back edge (which indicates a cycle) and a tree edge (which is part of the DFS/BFS traversal).
 */
+
+// approach: we can also use union-find (disjoint set) to detect the cycle in the graph. We will iterate through the edges and for each edge, we will check if the two vertices of the edge belong to the same set. If they belong to the same set, then we have found a cycle. Otherwise, we will union the two sets of the vertices.
+
+class SolutionUnionFind
+{
+public:
+    vector<int> parent;
+    vector<int> rank;
+
+    int find(int u)
+    {
+        if (parent[u] != u)
+        {
+            parent[u] = find(parent[u]); // path compression
+        }
+        return parent[u];
+    }
+
+    // modified union function to return a boolean indicating whether a union was performed or not
+    bool unionSet(int u, int v)
+    {
+        int rootU = find(u);
+        int rootV = find(v);
+
+        if (rootU != rootV)
+        {
+            if (rank[rootU] > rank[rootV])
+            {
+                parent[rootV] = rootU;
+            }
+            else if (rank[rootU] < rank[rootV])
+            {
+                parent[rootU] = rootV;
+            }
+            else
+            {
+                parent[rootV] = rootU;
+                rank[rootU]++;
+            }
+        }
+        else
+        {
+            return false; // if both vertices belong to the same set, we cannot perform a union
+        }
+        return true; // if we successfully performed a union, we return true
+    }
+
+    bool isCycle(int V, vector<vector<int>> &edges)
+    {
+        parent.resize(V);
+        rank.resize(V, 0);
+
+        for (int i = 0; i < V; i++)
+        {
+            parent[i] = i; // initialize the parent of each vertex to itself
+        }
+
+        for (const auto &edge : edges)
+        {
+            int u = edge[0];
+            int v = edge[1];
+
+            int rootU = find(u);
+            int rootV = find(v);
+
+            if (!unionSet(u, v)) // if we cannot perform a union, it means both vertices belong to the same set, which indicates a cycle
+            {
+                return true; // we have found a cycle in the graph
+            }
+        }
+
+        return false; // if we don't find any cycle in the graph, we will return false
+    }
+};
+
+/**
+ * Why same parent indicates a cycle in union-find?
+ * In union-find (disjoint set), we maintain a collection of disjoint sets of elements. Each set is represented by a "representative" or "parent" element. When we perform a union operation, we merge two sets together, and one of the representatives becomes the parent of the other.
+ * When we check if two vertices belong to the same set by comparing their representatives (parents), if they have the same representative, it means that they are already connected through a series of edges. If we encounter an edge that connects two vertices that already belong to the same set, it indicates that there is a cycle in the graph, because we have found a path from one vertex back to itself through the other vertex.
+ * For example, if we have an edge (u, v) and both u and v belong to the same set, it means that there is already a path from u to v through other vertices. Adding the edge (u, v) creates a cycle because we can now go from u to v and back to u through the existing path.
+ * Therefore, in the context of cycle detection in an undirected graph using union-find, if we find that the two vertices of an edge belong to the same set, it indicates that we have found a cycle in the graph.
+ */
