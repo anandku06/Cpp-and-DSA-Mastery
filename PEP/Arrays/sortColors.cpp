@@ -35,6 +35,7 @@ public:
         {
             if(nums[m] == 1) m++;
 
+            // if the current element is 2, we will swap it with the element at index j and decrement j, because 2 should be in last to make it sorted
             else if(nums[m] == 2) {
                 swap(nums[m], nums[j]);
                 j--;
