@@ -51,11 +51,50 @@
 // swaps are transitive, meaning if we can swap indices a and b, and we can swap indices b and c, then we can also swap indices a and c. This means that we can group the indices into connected components based on the allowed swaps. Within each connected component, we can freely swap the elements at those indices.
 // Therefore, we can use a union-find (disjoint set) data structure to find the connected components of indices. Once we have the connected components, we can count the frequency of each element in the source and target arrays for each component. The minimum hamming distance for that component will be the total number of elements in the component minus the number of elements that are the same in both source and target for that component.
 
-
 #include <bits/stdc++.h>
 using namespace std;
 
-class Solution {
-    public:
+class Solution
+{
+public:
+    vector<int> parent;
+    vector<int> rank;
+
+    int find(int u)
+    {
+        if (parent[u] != u)
+        {
+            parent[u] = find(parent[u]); // path compression
+        }
+        return parent[u];
+    }
+
+    void unionSet(int u, int v)
+    {
+        int rootU = find(u);
+        int rootV = find(v);
+
+        if (rootU != rootV)
+        {
+            if (rank[rootU] > rank[rootV])
+            {
+                parent[rootV] = rootU;
+            }
+            else if (rank[rootU] < rank[rootV])
+            {
+                parent[rootU] = rootV;
+            }
+            else
+            {
+                parent[rootV] = rootU;
+                rank[rootU]++;
+            }
+        }
+        // return true; // we successfully performed a union, we return true
+    }
+
+    int minimumHammingDistance(vector<int> &source, vector<int> &target, vector<vector<int>> &allowedSwaps)
+    {
         
+    }
 };

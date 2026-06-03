@@ -306,6 +306,8 @@ public:
 };
 
 // DSU is commonly used in graph algorithms, such as Kruskal's algorithm for finding the minimum spanning tree and in problems related to connected components and cycle detection in graphs.
+// why rank is used in DSU?
+// Rank is used in DSU to keep the tree representing the subsets balanced. When we unite two subsets, we attach the smaller tree (the one with lower rank) under the root of the larger tree (the one with higher rank). This helps to maintain efficient find operations, as it reduces the height of the tree and thus the time complexity of subsequent find operations. By using rank, we can ensure that the time complexity of DSU operations remains efficient, even in cases where there are many union operations.
 ```
 
 - The time complexity of DSU operations (find and unite) is O(α(n)), where α(n) is the inverse Ackermann function, which grows very slowly and is practically constant for all reasonable values of n. The space complexity is O(n) due to the parent and rank vectors used to store the disjoint sets.
