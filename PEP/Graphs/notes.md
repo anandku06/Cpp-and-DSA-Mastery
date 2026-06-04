@@ -326,3 +326,47 @@ We can use DSU to detect cycles in an undirected graph by checking if two vertic
 
 - Path compression is a technique used in the find operation of DSU to optimize the time complexity of subsequent find operations. It works by making each node on the path from a given element to the root of its subset point directly to the root, effectively flattening the structure of the tree representing the subsets.
 - Union by rank (or size) is a technique used in the unite operation of DSU to keep the tree representing the subsets balanced. It works by attaching the smaller tree (the one with lower rank or size) under the root of the larger tree (the one with higher rank or size), which helps maintain efficient find operations.
+
+## Dijikstra's Algorithm:
+
+- Dijkstra's algorithm is a graph algorithm used to find the shortest path from a source vertex to all other vertices in a weighted graph. It works by maintaining a priority queue of vertices based on their current shortest distance from the source vertex and iteratively updating the distances to neighboring vertices.
+
+```cpp
+vector<int> dijkstra(int V, unordered_map<int, vector<pair<int, int>>>& adj_list, int source) {
+    vector<int> dist(V, INT_MAX); // Vector to store the shortest distance from the source to each vertex
+    dist[source] = 0; // Distance from the source to itself is always 0
+
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq; // Min-heap priority queue
+    pq.push({0, source}); // Push the source vertex with distance 0
+
+    while (!pq.empty()) {
+        int current_dist = pq.top().first; // Get the vertex with the smallest distance
+        int current_vertex = pq.top().second;
+        pq.pop(); // Remove the vertex from the priority queue
+
+        // If the distance is greater than the current known distance, skip processing
+        if (current_dist > dist[current_vertex]) {
+            continue;
+        }
+
+        // Iterate through the neighbors of the current vertex
+        for (const auto& neighbor : adj_list[current_vertex]) {
+            int next_vertex = neighbor.first; // Neighboring vertex
+            int weight = neighbor.second; // Weight of the edge to the neighboring vertex
+
+            // Calculate the new distance to the neighboring vertex
+            int new_dist = current_dist + weight;
+
+            // If a shorter path is found, update the distance and push it to the priority queue
+            if (new_dist < dist[next_vertex]) {
+                dist[next_vertex] = new_dist; // Update the shortest distance
+                pq.push({new_dist, next_vertex}); // Push the neighboring vertex with its updated distance
+            }
+        }
+    }
+
+    return dist; // Return the vector containing shortest distances from the source to all vertices
+}
+```
+
+- The time complexity of Dijkstra's algorithm is O((V + E) log V), where V is the number of vertices and E is the number of edges in the graph. This is because each vertex is processed at most once, and each edge is processed at most once, with the priority queue operations taking logarithmic time. The space complexity is O(V) due to the distance vector and the priority queue used to store vertices based on their current shortest distance from the source vertex.
