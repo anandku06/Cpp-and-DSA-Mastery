@@ -370,3 +370,57 @@ vector<int> dijkstra(int V, unordered_map<int, vector<pair<int, int>>>& adj_list
 ```
 
 - The time complexity of Dijkstra's algorithm is O((V + E) log V), where V is the number of vertices and E is the number of edges in the graph. This is because each vertex is processed at most once, and each edge is processed at most once, with the priority queue operations taking logarithmic time. The space complexity is O(V) due to the distance vector and the priority queue used to store vertices based on their current shortest distance from the source vertex.
+
+### Limitation of Dijkstra's Algorithm:
+
+Dijkstra is not suitable when the graph consists of negative edges. The reason is, it doesn't revisit those nodes which have already been marked as visited. If a shorter path exists through a longer route with negative edges, Dijkstra's algorithm will fail to handle it.
+
+**Negative Weight Cycle**
+A negative weight cycle is a cycle in a graph, whose sum of edge weights is negative. If you traverse the cycle, the total weight accumulated would be less than zero.
+In the presence of negative weight cycle in the graph, the shortest path doesn't exist because with each traversal of the cycle shortest path keeps decreasing.
+
+## Bellman-Ford Algorithm
+
+- Bellman-Ford is a single source shortest path algorithm. It effectively works in the cases of negative edges and is able to detect negative cycles as well. It works on the principle of relaxation of the edges.
+- Works on Directed Graph only, if undirected given then convert it to directed, i.e. u->v and v->u will be two paths
+
+**Principle Of Relaxation**
+
+- _Relaxation_ means updating the shortest distance to a node if a shorter path is found through another node.
+- For an edge (u, v) with weight w:
+  If going through u gives a shorter path to v from the source node (i.e., distance[v] > distance[u] + w), we update the distance[v] as distance[u] + w.
+  In the bellman-ford algorithm, this process is repeated (V - 1) times for all the edges.
+
+```cpp
+vector<int> bellmanFord(int V, vector<vector<int>>& edges, int src) {
+
+    // Initially distance from source to all
+    // other vertices is not known(Infinite).
+	vector<int> dist(V, 1e8);
+	dist[src] = 0;
+
+	// Relaxation of all the edges V times, not (V - 1) as we
+    // need one additional relaxation to detect negative cycle
+	for (int i = 0; i < V; i++) {
+
+		for (vector<int> edge : edges) {
+			int u = edge[0];
+			int v = edge[1];
+			int wt = edge[2];
+			if (dist[u] != 1e8 && dist[u] + wt < dist[v]) {
+
+                // If this is the Vth relaxation, then there is
+                // a negative cycle
+                if(i == V - 1)
+                    return {-1};
+
+                // Update shortest distance to node v
+                dist[v] = dist[u] + wt;
+            }
+		}
+	}
+
+    return dist;
+}
+
+```
