@@ -424,3 +424,115 @@ vector<int> bellmanFord(int V, vector<vector<int>>& edges, int src) {
 }
 
 ```
+
+## Floyd Warshall Algorithm
+
+- _The Floyd–Warshall algorithm_ works by maintaining a two-dimensional array that represents the distances between nodes. Initially, this array is filled using only the direct edges between nodes. Then, the algorithm gradually updates these distances by checking if shorter paths exist through intermediate nodes.
+- This algorithm works for both the directed and undirected weighted graphs and can handle graphs with both positive and negative weight edges.
+
+**Note**: It does not work for the graphs with negative cycles (where the sum of the edges in a cycle is negative).
+
+### Idea Behind Floyd Warshall Algorithm:
+
+Suppose we have a graph dist[][] with V vertices from 0 to V-1. Now we have to evaluate a dist[][] where dist[i][j] represents the shortest path between vertex i to j.
+
+Let us assume that vertices i to j have intermediate nodes. The idea behind Floyd Warshall algorithm is to treat each and every vertex k from 0 to V-1 as an intermediate node one by one. When we consider the vertex k, we must have considered vertices from 0 to k-1 already. So we use the shortest paths built by previous vertices to build shorter paths with vertex k included.
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <climits>
+using namespace std;
+
+void floydWarshall(vector<vector<int>> &dist) {
+    int V = dist.size();
+    int INF = 1e8;
+
+    // for each intermediate vertex
+    for (int k = 0; k < V; k++) {
+
+        // Pick all vertices as source one by one
+        for (int i = 0; i < V; i++) {
+
+            // Pick all vertices as destination
+            // for the above picked source
+            for (int j = 0; j < V; j++) {
+
+                // shortest path from i to j
+                if(dist[i][k] != INF && dist[k][j]!= INF )
+                    dist[i][j] = min(dist[i][j],
+                                     dist[i][k] + dist[k][j]);
+            }
+        }
+    }
+}
+
+```
+
+### Why Floyd-Warshall Algorithm better for Dense Graphs and not for Sparse Graphs?
+
+- Dense Graph: A graph in which the number of edges are significantly much higher than the number of vertices.
+- Sparse Graph: A graph in which the number of edges are very much low.
+
+No matter how many edges are there in the graph the Floyd Warshall Algorithm runs for O(V3) times therefore it is best suited for Dense graphs. In the case of sparse graphs, Johnson's Algorithm is more suitable.
+
+### Negative Weights
+
+✅ Floyd-Warshall negative edge weights handle kar sakta hai.
+
+Example:
+
+A ----(-2)----> B
+
+Allowed hai.
+
+### Negative Cycle Detection
+
+Agar algorithm ke baad:
+
+dist[i][i] < 0
+
+Ho jaye kisi bhi i ke liye, to graph mein negative cycle hai.
+
+Kyun?
+
+Kyuki khud se khud tak ka shortest distance negative ho gaya.
+
+```cpp
+for(int i=0;i<n;i++){
+    if(dist[i][i] < 0){
+        cout<<"Negative Cycle Exists";
+    }
+}
+```
+
+## Minimum Spanning Tree
+
+### Spanning Tree
+
+- Agar graph me:
+  Saare vertices connected hon
+  Koi cycle na ho
+
+  to usse Spanning Tree kehte hain.
+
+**Properties**:
+Agar graph me V vertices hain:
+To spanning tree me hamesha:
+`Edges=V−1`
+
+Example:
+5 vertices ⇒ 4 edges
+
+- Sabhi possible spanning trees me se jiska total weight minimum ho, usse **Minimum Spanning Tree** kehte hain.
+
+Mathematically:
+`MST = Spanning Tree with Minimum Sum of Edge Weights`
+
+### MST ki Conditions
+
+Ek MST me:
+✅ Saare vertices connected hone chahiye
+✅ Cycle nahi hona chahiye
+✅ Total weight minimum hona chahiye
+✅ Edges = V−1 hone chahiye
