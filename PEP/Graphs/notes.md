@@ -536,3 +536,87 @@ Ek MST me:
 ✅ Cycle nahi hona chahiye
 ✅ Total weight minimum hona chahiye
 ✅ Edges = V−1 hone chahiye
+
+### Prim's Algorithm
+
+- Prim's Algorithm ka use Minimum Spanning Tree (MST) banane ke liye hota hai.
+- Prim's algorithm ek vertex se start karta hai aur har step par minimum weight wali edge choose karta hai jo kisi naye vertex ko tree me add kare.
+
+#### Prim's Intuition
+
+Maan lo tum ek city me internet cable bichha rahe ho.
+Tum ek city se kaam start karte ho aur har baar sabse sasti cable lagakar ek nayi city connect karte jaate ho.
+Dheere-dheere saari cities connect ho jaati hain aur total cost minimum hoti hai.
+Yahi Prim's Algorithm ka idea hai.
+
+- Prim's Algorithm tab use hota hai jab graph:
+  ✅ Weighted ho
+  ✅ Undirected ho
+  ✅ Connected ho
+
+#### Working Principle
+
+Har step par:
+
+- MST me maujood vertices ko dekho.
+- Unse connected minimum edge choose karo.
+- Jo vertex abhi MST me nahi hai usse add karo.
+- Repeat until all vertices include ho jaaye.
+
+```cpp
+// sample code
+// Returns total weight of the Minimum Spanning Tree
+int spanningTree(int V, vector<vector<int>> adj[]) {
+
+    // Min-heap storing {weight, vertex}
+    priority_queue<pair<int,int>, vector<pair<int,int>>,
+                                greater<pair<int,int>>> pq;
+
+    // Marks vertices already taken in MST
+    vector<bool> visited(V, false);
+
+    int res = 0;
+
+    // Start from node 0
+    pq.push({0, 0});
+
+    while(!pq.empty()) {
+
+        auto p = pq.top();
+        pq.pop();
+
+        int wt = p.first;
+        int u = p.second;
+
+        if(visited[u])
+            continue;
+
+        res += wt;
+        visited[u] = true;
+
+        // Push adjacent edges
+        for(auto &v : adj[u]) {
+
+            if(!visited[v[0]]) {
+                pq.push({v[1], v[0]});
+            }
+        }
+    }
+
+    return res;
+}
+```
+
+#### Advantages and Disadvantages of Prim's algorithm
+
+**Advantages**:
+
+- Prim's algorithm is guaranteed to find the MST in a connected, weighted graph.
+- It has a time complexity of `O((E+V)\*log(V))` using a binary heap or Fibonacci heap, where E is the number of edges and V is the number of vertices.
+- It is a relatively simple algorithm to understand and implement compared to some other MST algorithms.
+
+**Disadvantages**:
+
+- Like Kruskal's algorithm, Prim's algorithm can be slow on dense graphs with many edges, as it requires iterating over all edges at least once.
+- Prim's algorithm relies on a priority queue, which can take up extra memory and slow down the algorithm on very large graphs.
+- The choice of starting node can affect the MST output, which may not be desirable in some applications.
