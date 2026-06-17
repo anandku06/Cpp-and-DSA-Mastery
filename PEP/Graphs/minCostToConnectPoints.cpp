@@ -104,3 +104,93 @@ public:
         return primsAlgo(n, adj);
     }
 };
+
+// using Kruskal's Algorithm
+
+class KruskalSolution
+{
+    vector<int> parent;
+    vector<int> rank;
+
+    int find(int x)
+    {
+        if (x == parent[x])
+            return parent[x];
+
+        return parent[x] = find(parent[x]);
+    }
+
+    void unite(int x, int y)
+    {
+        int rootX = find(x);
+        int rootY = find(y);
+
+        if (rootX != rootY)
+        {
+            if (rank[rootX] < rank[rootY])
+            {
+                parent[rootX] = rootY;
+            }
+            else if (rank[rootX] > rank[rootY])
+            {
+                parent[rootY] = rootX;
+            }
+            else
+            {
+                parent[rootY] = rootX;
+                rank[rootX]++;
+            }
+        }
+    }
+
+    int minCostConnectPoints(vector<vector<int>> &points)
+    {
+        int n = points.size();
+
+        vector<vector<int>> edges; // edges list bna rhe
+        // har i ko j se connect krna
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = i + 1; j < n; j++)
+            {
+                int x1 = points[i][0];
+                int y1 = points[i][1];
+
+                int x2 = points[j][0];
+                int y2 = points[j][1];
+
+                int wt = abs(x1 - x2) + abs(y1 - y2);
+
+                edges.push_back({i, j, wt});
+            }
+        }
+
+        sort(edges.begin(), edges.end(), [](auto &a, auto &b)
+             { return a[2] < b[2]; });
+
+        parent.resize(n);
+        rank.resize(n, 0);
+
+        iota(parent.begin(), parent.end(), 0);
+
+        int sum = 0;
+        int i = 0;
+        for (auto &t : edges)
+        {
+            int u = t[0];
+            int v = t[1];
+            int wt = t[2];
+
+            if (find(u) != find(v))
+            {
+                unite(u, v);
+                sum += wt;
+                i++;
+
+                if(i == n - 1) break; // bcz hume MST me edges n - 1 tk hi check krna hai
+            }
+        }
+
+        return sum;
+    }
+};

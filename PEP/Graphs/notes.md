@@ -620,3 +620,144 @@ int spanningTree(int V, vector<vector<int>> adj[]) {
 - Like Kruskal's algorithm, Prim's algorithm can be slow on dense graphs with many edges, as it requires iterating over all edges at least once.
 - Prim's algorithm relies on a priority queue, which can take up extra memory and slow down the algorithm on very large graphs.
 - The choice of starting node can affect the MST output, which may not be desirable in some applications.
+
+### Kruskal's Algorithm
+
+- Kruskal's Algorithm is a greedy algorithm used to find the Minimum Spanning Tree (MST) of a weighted, undirected graph.
+
+**The main idea is very simple:**
+Always choose the smallest edge available, as long as it does not create a cycle.
+
+#### Intuition
+
+Imagine you are building roads between cities.
+
+You want:
+
+- All cities to be connected
+- Minimum construction cost
+- No unnecessary roads
+
+Kruskal says:
+"Keep adding the cheapest roads first."
+
+But there is one rule:
+**Never create a cycle**.
+
+#### Kruskal's Algorithm Steps
+
+- Sort all edges in increasing order of weight.
+- Initialize DSU.
+- Traverse edges one by one.
+- If edge does not create a cycle:
+  Add it to MST
+  Perform Union
+- Stop after selecting `V−1` edges.
+
+```cpp
+class Solution
+{
+    // DSU (Disjoint Set Union) data structures
+    vector<int> parent; // stores parent of each node
+    vector<int> rank;   // stores rank (approx. height) of tree
+
+    // Find the ultimate parent (leader) of a node
+    // Path Compression optimization:
+    // Every node directly points to its root parent
+    int find(int x)
+    {
+        // If x is not its own parent,
+        // recursively find the root parent
+        if (x != parent[x])
+            parent[x] = find(parent[x]);
+
+        return parent[x];
+    }
+
+    // Union by Rank
+    // Merge two sets containing x and y
+    void unite(int x, int y)
+    {
+        // Find leaders of both sets
+        int rootX = find(x);
+        int rootY = find(y);
+
+        // Already in same component
+        // Adding edge would create a cycle
+        if (rootX == rootY)
+            return;
+
+        // Attach smaller rank tree under larger rank tree
+        if (rank[rootX] < rank[rootY])
+        {
+            parent[rootX] = rootY;
+        }
+        else if (rank[rootX] > rank[rootY])
+        {
+            parent[rootY] = rootX;
+        }
+        else
+        {
+            // If ranks are same,
+            // make one root parent of other
+            parent[rootY] = rootX;
+
+            // Increase rank since tree height increases
+            rank[rootX]++;
+        }
+    }
+
+public:
+    int spanningTree(int V, vector<vector<int>> &edges)
+    {
+        // Step 1: Sort all edges in increasing order of weight
+        //
+        // Edge format:
+        // [u, v, wt]
+        //
+        // Sort according to wt
+        sort(edges.begin(), edges.end(),
+             [](auto &a, auto &b)
+             {
+                 return a[2] < b[2];
+             });
+
+        // Initialize DSU arrays
+        parent.resize(V);
+        rank.resize(V, 0);
+
+        // Initially every node is its own parent
+        //
+        // Example:
+        // parent = [0,1,2,3,...]
+        iota(parent.begin(), parent.end(), 0);
+
+        int sum = 0; // stores MST cost
+
+        // Traverse edges from smallest weight to largest
+        for (auto &t : edges)
+        {
+            int u = t[0];  // source vertex
+            int v = t[1];  // destination vertex
+            int wt = t[2]; // edge weight
+
+            // If u and v belong to different components,
+            // then adding this edge will NOT create a cycle
+            if (find(u) != find(v))
+            {
+                // Include edge in MST
+                sum += wt;
+
+                // Merge both components
+                unite(u, v);
+            }
+
+            // Otherwise ignore the edge
+            // because it creates a cycle
+        }
+
+        // Return total weight of MST
+        return sum;
+    }
+};
+```
