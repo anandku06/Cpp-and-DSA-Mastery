@@ -761,3 +761,181 @@ public:
     }
 };
 ```
+
+## SCC (Strongly Connected Components)
+
+- A Strongly Connected Component is a group of vertices where:
+  For every pair of vertices u and v,
+  u can reach v and v can also reach u.
+- In simple words:
+  Every node can reach every other node inside the component.
+
+### Why SCC matters?
+
+Used in:
+
+- Deadlock detection
+- Social networks
+- Dependency analysis
+- Compiler optimization
+- Web page ranking
+
+### Kosaraju's Algorithm Idea
+
+It uses:
+
+- DFS #1
+  Find vertices according to their finishing times.
+
+- Reverse Graph
+  Reverse all edges.
+
+- DFS #2
+  Process vertices in decreasing finishing time order.
+
+Each DFS gives one SCC.
+
+#### "Kosaraju me finishing order (topological intuition) ki zaroorat kyu hai?"
+
+SCCs ko compress karne par graph DAG ban jata hai. First DFS ke finishing times SCC-DAG ke reverse topological order ko represent karte hain. Reverse graph par isi order me DFS chalane se hum hamesha ek SCC ke source node se start karte hain, jiski wajah se har DFS exactly ek SCC discover karti hai.
+
+```cpp
+class Solution {
+public:
+
+    void dfs1(int node,
+              vector<int> adj[],
+              vector<int>& vis,
+              stack<int>& st)
+    {
+        vis[node] = 1;
+
+        for(auto nbr : adj[node])
+        {
+            if(!vis[nbr])
+                dfs1(nbr, adj, vis, st);
+        }
+
+        st.push(node);
+    }
+
+    void dfs2(int node,
+              vector<int> revAdj[],
+              vector<int>& vis)
+    {
+        vis[node] = 1;
+
+        for(auto nbr : revAdj[node])
+        {
+            if(!vis[nbr])
+                dfs2(nbr, revAdj, vis);
+        }
+    }
+
+    int kosaraju(int V, vector<int> adj[])
+    {
+        stack<int> st;
+        vector<int> vis(V, 0);
+
+        // Step 1
+        for(int i=0;i<V;i++)
+        {
+            if(!vis[i])
+                dfs1(i, adj, vis, st);
+        }
+
+        // Step 2
+        vector<int> revAdj[V];
+
+        for(int i=0;i<V;i++)
+        {
+            for(auto nbr : adj[i])
+            {
+                revAdj[nbr].push_back(i);
+            }
+        }
+
+        fill(vis.begin(), vis.end(), 0);
+
+        // Step 3
+        int sccCount = 0;
+
+        while(!st.empty())
+        {
+            int node = st.top();
+            st.pop();
+
+            if(!vis[node])
+            {
+                dfs2(node, revAdj, vis);
+                sccCount++;
+            }
+        }
+
+        return sccCount;
+    }
+};
+```
+
+## Multi-Source BFS
+
+- Multi-Source BFS is simply a BFS where instead of starting from one node, you start from multiple nodes simultaneously.
+- The idea is:
+  Put all source nodes into the queue initially and run normal BFS.
+- Because BFS explores level by level, the distance computed for each node becomes the distance from its nearest source.
+
+### Intuition to Remember
+
+Whenever the question says:
+
+"For every node/cell, find the distance to the nearest X"
+
+or
+
+"Multiple starting points spread simultaneously"
+
+you should immediately think:
+
+**Multi-Source BFS**
+
+because:
+Put all X's in the queue at distance 0 and run one BFS.
+
+This is often much faster than running BFS from each source individually.
+
+### Difference from Normal BFS
+
+| Normal BFS                        | Multi-Source BFS                     |
+| --------------------------------- | ------------------------------------ |
+| One starting node                 | Multiple starting nodes              |
+| Queue initially contains one node | Queue initially contains all sources |
+| Distance from a single source     | Distance from nearest source         |
+| O(V+E)                            | O(V+E)                               |
+
+### Generic Template
+
+```cpp
+vector<int> dist(n, INT_MAX);
+queue<int> q;
+
+for(auto src : sources)
+{
+    dist[src] = 0;
+    q.push(src);
+}
+
+while(!q.empty())
+{
+    int node = q.front();
+    q.pop();
+
+    for(auto nbr : adj[node])
+    {
+        if(dist[nbr] == INT_MAX)
+        {
+            dist[nbr] = dist[node] + 1;
+            q.push(nbr);
+        }
+    }
+}
+```
