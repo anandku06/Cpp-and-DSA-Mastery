@@ -939,3 +939,35 @@ while(!q.empty())
     }
 }
 ```
+
+## Hierholzer’s Algorithm
+
+- Hierholzer’s Algorithm is an elegant, highly efficient algorithm used to find an Eulerian Path or an Eulerian Circuit in a graph.
+- If you've ever tried to solve a "one-stroke drawing" puzzle—where you have to draw a shape connecting all lines without ever lifting your pencil or retracing a line—you have already solved an Eulerian path problem by hand.
+
+### The Core Concepts: Circuit vs. Path
+
+- Before looking at the algorithm, we need to know what it is hunting for:
+
+  **Eulerian Circuit**: A trail in a graph that visits every single edge exactly once and ends up back at the starting vertex.
+
+  **Eulerian Path**: A trail that visits every single edge exactly once, but can start and end at different vertices.
+
+### The "Rules" of Existence
+
+- For an Undirected Graph:
+  A _circuit_ exists if every single vertex has an even number of edges.
+  A _path_ exists if exactly two vertices have an odd number of edges (you must start at one odd vertex and you will automatically finish at the other).
+- For a Directed Graph (like flights):
+  A _circuit_ exists if every vertex has `{in-degree} = {out-degree}`.
+  A _path_ exists if at most one vertex has `{out-degree} - \text{in-degree} = 1` (the start) and one vertex has `{in-degree} - {out-degree} = 1` (the end).
+
+### Intuition
+
+- The core insight of Hierholzer's algorithm is that a large Eulerian graph is actually made up of multiple smaller overlapping loops.
+
+- If you start walking randomly through the graph without reusing edges, you will eventually get "stuck." Because of the mathematical properties of Eulerian graphs, the only place you can ever get stuck is back at your starting point (or the final destination if it's a path). You've completed a loop!
+
+- But what if you left some unvisited edges behind? Hierholzer’s algorithm says: “No problem. Look at the loop you just made. Find a vertex on this loop that still has unvisited edges, go complete that sub-loop, and just splice it into your original path.”
+
+- Instead of explicitly "splicing" arrays later, we use Depth-First Search (DFS) and a stack (or recursion) to do this automatically.

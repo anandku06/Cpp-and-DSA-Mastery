@@ -43,21 +43,30 @@ using namespace std;
 class Solution
 {
 public:
+    // Pair configuration: {current_max_effort, {row_index, col_index}}
     typedef pair<int, pair<int, int>> P;
-    vector<vector<int>> directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}}; // 4 directions
+
+    // Direction vectors to easily look up, down, left, and right
+    vector<vector<int>> directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
     int minimumEffortPath(vector<vector<int>> &heights)
     {
         int m = heights.size();
         int n = heights[0].size();
 
-        vector<vector<int>> result(m, vector<int>(n, INT_MAX)); // path vector
-        result[0][0] = 0;                                       // src pe hi hai av, to wt always 0
+        // result[i][j] stores the minimum possible path effort required to reach cell (i, j) from (0, 0).
+        // Initialized to INT_MAX because we want to minimize this value during exploration.
+        vector<vector<int>> result(m, vector<int>(n, INT_MAX));
 
+        // Base Case: Starting at the source cell (0, 0) costs 0 effort.
+        result[0][0] = 0;
+
+        // Min-heap priority queue to always process the cell with the smallest path effort first.
+        // Elements are ordered ascendingly by their first parameter (effort).
         priority_queue<P, vector<P>, greater<P>> pq;
-        pq.push({0, {0, 0}}); // {dist, {i, j}}
+        pq.push({0, {0, 0}}); // Format: {effort, {x_coord, y_coord}}
 
-        // lambda function to check i and j boundaries
+        // Lambda function to verify if the given coordinates fall within the grid boundaries
         auto isSafe = [&](int x, int y)
         {
             return x >= 0 && x < m && y >= 0 && y < n;
@@ -65,6 +74,7 @@ public:
 
         while (!pq.empty())
         {
+            // Extract the cell containing the minimum effort path prefix currently available
             int diff = pq.top().first;
             auto coords = pq.top().second;
             pq.pop();
@@ -72,8 +82,15 @@ public:
             int x = coords.first;
             int y = coords.second;
 
-            if(x == m - 1 && y == n - 1) return diff; // optimisation, if me last cell me aagya to return krdo
+            // Target Optimization: Since Dijkstra guarantees the shortest/most optimal path
+            // is evaluated first, the first time we pop the bottom-right cell, 'diff' is guaranteed
+            // to be the absolute minimum effort path value. We can safely return early.
+            if (x == m - 1 && y == n - 1)
+            {
+                return diff;
+            }
 
+            // Explore all 4 adjacent neighbors
             for (auto dir : directions)
             {
                 int nextX = x + dir[0];
@@ -81,9 +98,15 @@ public:
 
                 if (isSafe(nextX, nextY))
                 {
+                    // 1. Calculate the absolute height difference for this single step
                     int absDiff = abs(heights[x][y] - heights[nextX][nextY]);
-                    int maxDiff = max(diff, absDiff); // bcz hume max diff choose krna hai
 
+                    // 2. The effort of a route is determined by its *maximum* single step gap.
+                    // We check if this single step is worse than the path effort we accumulated to reach (x, y).
+                    int maxDiff = max(diff, absDiff);
+
+                    // 3. Relaxation Step: If the newly calculated total route effort to 'next cell'
+                    // is strictly better (smaller) than any previous path found to that cell, update it.
                     if (result[nextX][nextY] > maxDiff)
                     {
                         result[nextX][nextY] = maxDiff;
@@ -93,6 +116,7 @@ public:
             }
         }
 
-        return result[m - 1][n - 1]; // jo last cell me value rhegi wohi ans rhega
+        // Fallback return statement containing the computed value for the final cell
+        return result[m - 1][n - 1];
     }
 };
