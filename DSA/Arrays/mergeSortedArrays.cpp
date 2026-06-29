@@ -52,23 +52,43 @@ class Solution
 public:
     void merge(vector<int> &nums1, int m, vector<int> &nums2, int n)
     {
-        int i = m - 1;     // Pointer for the last element in nums1
-        int j = n - 1;     // Pointer for the last element in nums2
-        int k = m + n - 1; // Pointer for the last position in the merged array
+        // Initialize 'i' to point to the last actual element in nums1
+        int i = m - 1;
 
-        // Merge the arrays starting from the end
-        while (j >= 0 && i >= 0)
+        // Initialize 'j' to point to the last element in nums2
+        int j = n - 1;
+
+        // Initialize 'k' to point to the very last index of the allocated space in nums1
+        // (Since nums1 has a total capacity of m + n, the last index is m + n - 1)
+        int k = m + n - 1;
+
+        // The loop continues as long as there are elements left in nums2 to process.
+        // We don't track 'i >= 0' here because if nums1 runs out first, we still need
+        // to finish copying elements from nums2.
+        while (j >= 0)
         {
-            // Compare the elements at the pointers and place the larger one at the end of nums1
-            if (nums1[i] > nums2[j])
+
+            // Check if nums1 still has elements left (i >= 0)
+            // AND if the current element in nums1 is strictly greater than the one in nums2.
+            if (i >= 0 && nums1[i] > nums2[j])
             {
+
+                // Place the larger element from nums1 into the current end position 'k'
+                // Then, decrement both 'k' and 'i' to move backward
                 nums1[k--] = nums1[i--];
             }
-            // If the element in nums2 is larger, place it at the end of nums1
+            // This block executes if:
+            // 1. The element in nums2 is greater than or equal to the element in nums1, OR
+            // 2. nums1 is completely exhausted (i < 0)
             else
             {
+
+                // Place the element from nums2 into the current end position 'k'
+                // Then, decrement both 'k' and 'j' to move backward
                 nums1[k--] = nums2[j--];
             }
         }
+        // Once j drops below 0, all elements from nums2 have been merged.
+        // Any remaining elements in nums1 are already in their correct, sorted positions.
     }
 };
