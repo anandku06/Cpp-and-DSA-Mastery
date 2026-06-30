@@ -78,7 +78,7 @@ public:
         }
 
         int longest = 1; // to store the length of the longest consecutive sequence
-        for (int i : nums)
+        for (int i : hashSet)
         {
             if (hashSet.count(i - 1))
             {
