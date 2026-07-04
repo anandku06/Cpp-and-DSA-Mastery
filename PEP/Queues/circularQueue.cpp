@@ -47,20 +47,24 @@ using namespace std;
 class MyCircularQueue
 {
 public:
-    vector<int> v;
-    int rear = 0;
-    int front = 0;
-    int n;
+    vector<int> v; // vector to store the elements of the circular queue
+    int rear = 0;  // index of the rear element in the circular queue
+    int front = 0; // index of the front element in the circular queue
+    int n;         // size of the circular queue
     MyCircularQueue(int k)
     {
+        // initialize the vector with size k + 1 to accommodate the circular nature of the queue
         v = vector<int>(k + 1);
         n = k + 1;
     }
 
     bool enQueue(int value)
     {
+        // check if the circular queue is full, if it is full, return false
         if (isFull())
             return false;
+
+        // insert the value at the rear index and update the rear index to the next position in a circular manner
         v[rear] = value;
         rear = (rear + 1) % n;
         return true;
@@ -70,6 +74,8 @@ public:
     {
         if (isEmpty())
             return false;
+
+        // update the front index to the next position in a circular manner, effectively removing the front element from the circular queue
         front = (front + 1) % n;
         return true;
     }
@@ -85,6 +91,8 @@ public:
     {
         if (isEmpty())
             return -1;
+        
+        // calculate the index of the last element in the circular queue, which is the element just before the rear index in a circular manner
         int ele = (rear == 0) ? n - 1 : rear - 1;
         return v[ele];
     }
