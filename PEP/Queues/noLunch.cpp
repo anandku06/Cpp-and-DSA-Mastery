@@ -36,6 +36,8 @@
 // sandwiches[i] is 0 or 1.
 // students[i] is 0 or 1.
 
+// approach: The problem can be solved by simulating the process of students taking sandwiches. We can use a queue to represent the students and a stack to represent the sandwiches. We can iterate through the students and for each student, we can check if they prefer the sandwich on the top of the stack. If they do, we remove them from the queue and pop the sandwich from the stack. If they don't, we move them to the end of the queue. We continue this process until none of the students want to take the top sandwich. Finally, we return the number of students remaining in the queue.
+
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -51,8 +53,8 @@ public:
 
         for (int i = 0; i < n; i++)
         {
-            studQueue.push(i);
-            sandStack.push(n - i - 1); // to match with the students
+            studQueue.push(students[i]);
+            sandStack.push(sandwiches[n - i - 1]); // push the sandwiches in reverse order to simulate the stack
         }
 
         int lastServed = 0;

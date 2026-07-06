@@ -25,7 +25,7 @@
 // 1 <= temperatures.length <= 105
 // 30 <= temperatures[i] <= 100
 
-// using stack to store the current temp and checking the next temp and storing the ans
+// approach: The problem can be solved using a stack. We can iterate through the temperatures and for each temperature, we can check if it is greater than the temperature at the top of the stack. If it is, we can pop the top of the stack and update the answer for that index. We can continue this process until the stack is empty or the current temperature is less than or equal to the temperature at the top of the stack. Finally, we can push the current index onto the stack. This way, we can keep track of the indices of the temperatures that we have seen so far and update the answer accordingly.
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -35,7 +35,6 @@ class Solution
 public:
     // stack to store the indices of the temperatures
     stack<int> st;
-
 
     vector<int> dailyTemperature(vector<int> &temperatures)
     {
