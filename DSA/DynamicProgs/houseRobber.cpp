@@ -58,6 +58,7 @@ public:
 
 class Tabulation_Solution
 {
+public:
     int rob(vector<int> &nums)
     {
         int n = nums.size(); // get the size of the nums array
@@ -79,5 +80,31 @@ class Tabulation_Solution
 
         // return the maximum amount robbed from all houses
         return dp[n];
+    }
+};
+
+// idea of constant space, we can use two variables to store the maximum amount robbed from the (i-1)th house and the (i-2)th house instead of using a dp array. This will reduce the space complexity from O(n) to O(1).
+
+class ConstantSpace_Solution
+{
+public:
+    int rob(vector<int> &nums)
+    {
+        int n = nums.size(); // get the size of the nums array
+
+        if (n == 1)
+            return nums[0]; // if there is only one house, return the amount in that house
+
+        int prev1 = nums[0]; // maximum amount robbed from the (i-1)th house
+        int prev2 = 0;       // maximum amount robbed from the (i-2)th house
+
+        for (int i = 2; i <= n; i++)
+        {
+            int current = max(prev1, prev2 + nums[i - 1]); // maximum amount robbed from the (i-1)th house and the (i-2)th house plus the amount in the ith house
+            prev2 = prev1;                                 // update the maximum amount robbed from the (i-2)th house to the maximum amount robbed from the (i-1)th house
+            prev1 = current;                               // update the maximum amount robbed from the (i-1)th house to the current maximum amount robbed
+        }
+
+        return prev1;
     }
 };

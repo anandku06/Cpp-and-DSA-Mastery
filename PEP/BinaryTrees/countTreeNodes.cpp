@@ -54,8 +54,10 @@ public:
         if (!root)
             return 0;
 
-        int leftHeight = getHeight(root->left, 0); // height of left subtree
-        int rightHeight = getHeight(root->right, 1); // height of right subtree
+        // calculate the height of the tree
+        // changed the params to root bcz we need to calculate the height of the tree from the root node
+        int leftHeight = getHeight(root, 0);  // height of left subtree
+        int rightHeight = getHeight(root, 1); // height of right subtree
 
         if (leftHeight == rightHeight)
         {
@@ -72,7 +74,7 @@ public:
             return 0;
         if (type == 0)
         {
-            return 1 + getHeight(node->left, 0); 
+            return 1 + getHeight(node->left, 0);
         }
         else
         {
