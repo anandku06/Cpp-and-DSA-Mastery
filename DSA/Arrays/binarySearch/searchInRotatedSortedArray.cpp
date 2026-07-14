@@ -80,15 +80,26 @@ public:
         int n = nums.size();          // get the size of the array
         int pivot = find_pivot(nums); // find the index of the pivot element (the smallest element in the array)
 
-        if (nums[pivot] == target) // if the target is equal to the pivot element, return the pivot index
+        // If the pivot itself is the target, we're done
+        if (nums[pivot] == target)
             return pivot;
 
-        int idx = -1; // initialize index to -1
+        // If the array isn't actually rotated (pivot is 0), search the whole thing
+        if (pivot == 0)
+        {
+            return binarySearch(nums, target, 0, n - 1);
+        }
 
-        idx = binarySearch(nums, target, 0, pivot - 1); // perform binary search on the left half of the array
-        if (idx != -1)                                  // if the target is found in the left half, return the index
-            return idx;
-        idx = binarySearch(nums, target, pivot, n - 1); // perform binary search on the right half of the array
-        return idx;                                         // return the index found in the right half (or -1 if not found)
+        // Decide which sorted subarray to search in
+        if (target >= nums[0])
+        {
+            // Target is larger than or equal to the first element, so it's in the left sorted half
+            return binarySearch(nums, target, 0, pivot - 1);
+        }
+        else
+        {
+            // Target is smaller than the first element, so it's in the right sorted half
+            return binarySearch(nums, target, pivot + 1, n - 1);
+        }
     }
 };
