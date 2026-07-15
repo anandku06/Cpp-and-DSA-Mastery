@@ -106,3 +106,38 @@ public:
         return max(robHelper(case1), robHelper(case2)); // return the maximum of the two cases
     }
 };
+
+class ConstantSpace_Solution
+{
+public:
+    int solve(vector<int> &nums, int start, int end)
+    {
+        int prev1 = 0; // maximum amount robbed from the (i-1)th house
+        int prev2 = 0; // maximum amount robbed from the (i-2)th house
+
+        for (int i = start; i <= end; i++)
+        {
+            int current = max(prev1, prev2 + nums[i]); // maximum amount robbed from the (i-1)th house and the (i-2)th house plus the amount in the ith house
+            prev2 = prev1;                             // update the maximum amount robbed from the (i-2)th house to the maximum amount robbed from the (i-1)th house
+            prev1 = current;                           // update the maximum amount robbed from the (i-1)th house to the current maximum amount robbed
+        }
+
+        return prev1; // return the maximum amount robbed from all houses
+    }
+
+    int rob(vector<int> &nums)
+    {
+        int n = nums.size(); // get the size of the input array
+
+        if (n == 1)
+            return nums[0]; // if there is only one house, return its value
+
+        if (n == 2)
+            return max(nums[0], nums[1]); // if there are two houses, return the maximum of the two houses
+
+        int case1 = solve(nums, 0, n - 2); // for the case where we rob the first house
+        int case2 = solve(nums, 1, n - 1); // for the case where we do not rob the first house
+
+        return max(case1, case2); // return the maximum of the two cases
+    }
+};
