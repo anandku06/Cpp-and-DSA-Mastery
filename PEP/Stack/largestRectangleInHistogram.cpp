@@ -88,7 +88,6 @@ public:
 // approach: using stack
 // Intuition
 
-
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -171,5 +170,39 @@ public:
 
         // Return largest area found
         return largestArea;
+    }
+};
+
+// approach: optimisation (single pass)
+
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution
+{
+public:
+    int largestRectangleArea(vector<int> &heights)
+    {
+        stack<int> st;   // to store the indices of the bars
+        int maxArea = 0; // to store the maximum area found so far
+
+        heights.push_back(0); // add a bar of height 0 to the end of the histogram to pop all the bars from the stack at the end
+        for (int i = 0; i < heights.size(); i++)
+        {
+            // Maintain a strictly increasing stack
+            while (!st.empty() && heights[i] < heights[st.top()])
+            {
+                int height = heights[st.top()];
+                st.pop();
+
+                // If the stack is empty, this popped bar was the shortest so far,
+                // meaning it can extend all the way back to the start (index 0).
+                int width = st.empty() ? i : (i - st.top() - 1);
+
+                maxArea = max(maxArea, height * width);
+            }
+            st.push(i);
+        }
+        return maxArea;
     }
 };

@@ -120,3 +120,37 @@ public:
 // (P p1, P p2): Ye inputs hain. sort function do elements ko compare karne ke liye bhejega.
 
 // { return p1.second > p2.second; }: Ye logic hai. Aap keh rahe hain: "Agar pehle element ki frequency doosre se badi hai, toh use pehle rakho (Descending Order)."
+
+class Solution3
+{
+public:
+    string frequencySort(string s)
+    { // Step 1: Count the frequency of each character
+        unordered_map<char, int> freqMap;
+        for (char c : s)
+        {
+            freqMap[c]++;
+        }
+
+        // Step 2: Push pairs into a max-heap
+        // The pair is structured as {frequency, character}
+        priority_queue<pair<int, char>> maxHeap;
+        for (auto &entry : freqMap)
+        {
+            maxHeap.push({entry.second, entry.first});
+        }
+
+        // Step 3: Reconstruct the string from the heap
+        string result = "";
+        while (!maxHeap.empty())
+        {
+            auto it = maxHeap.top();
+            maxHeap.pop();
+
+            // Append the character 'freq' times
+            result.append(it.first, it.second);
+        }
+
+        return result;
+    }
+};
