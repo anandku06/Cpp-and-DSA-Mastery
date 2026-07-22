@@ -107,3 +107,81 @@ public:
         return count; // return the total number of provinces
     }
 };
+
+// Using Union-Find (Disjoint Set Union) to count the number of provinces. We can iterate through the isConnected matrix and union the cities that are directly connected. Finally, we can count the number of unique parents to get the number of provinces.
+class UnionFindSolution
+{
+private:
+    vector<int> parent;
+    vector<int> rank;
+
+public:
+    UnionFindSolution(int n)
+    {
+        parent.resize(n);
+        rank.resize(n, 0);
+        for (int i = 0; i < n; i++)
+        {
+            parent[i] = i;
+        }
+    }
+
+    int find(int x)
+    {
+        if (parent[x] != x)
+        {
+            parent[x] = find(parent[x]); // path compression
+        }
+        return parent[x];
+    }
+
+    void unite(int x, int y)
+    {
+        int rootX = find(x);
+        int rootY = find(y);
+
+        if (rootX != rootY)
+        {
+            if (rank[rootX] < rank[rootY])
+            {
+                parent[rootX] = rootY;
+            }
+            else if (rank[rootX] > rank[rootY])
+            {
+                parent[rootY] = rootX;
+            }
+            else
+            {
+                parent[rootY] = rootX;
+                rank[rootX]++;
+            }
+        }
+    }
+
+    int findCircleNum(vector<vector<int>> &isConnected)
+    {
+        int n = isConnected.size();
+        UnionFindSolution uf(n);
+
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                if (isConnected[i][j] == 1)
+                {
+                    uf.unite(i, j);
+                }
+            }
+        }
+
+        int count = 0;
+        for (int i = 0; i < n; i++)
+        {
+            if (uf.find(i) == i)
+            {
+                count++;
+            }
+        }
+        return count;
+    }
+};

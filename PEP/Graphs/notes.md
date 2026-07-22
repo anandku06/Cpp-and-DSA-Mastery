@@ -971,3 +971,19 @@ while(!q.empty())
 - But what if you left some unvisited edges behind? Hierholzer’s algorithm says: “No problem. Look at the loop you just made. Find a vertex on this loop that still has unvisited edges, go complete that sub-loop, and just splice it into your original path.”
 
 - Instead of explicitly "splicing" arrays later, we use Depth-First Search (DFS) and a stack (or recursion) to do this automatically.
+
+### Example Implementation
+
+```cpp
+void dfs(int node, vector<vector<int>> &adj, stack<int> &stk)
+{
+    while (!adj[node].empty())
+    {
+        int nextNode = adj[node].back();
+        adj[node].pop_back(); // Remove the edge to avoid revisiting
+        dfs(nextNode, adj, stk);
+    }
+    stk.push(node); // Add the node to the stack after visiting all edges
+}
+
+
