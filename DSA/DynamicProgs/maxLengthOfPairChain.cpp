@@ -61,6 +61,8 @@ public:
         int n = pairs.size();                              // get the size of the input array
         vector<vector<int>> dp(n, vector<int>(n + 1, -1)); // create a 2D dp array to store the length of the longest chain ending at each index with a previous index
 
+        sort(pairs.begin(), pairs.end()); // sort the pairs based on the first element
+
         return solve(pairs, 0, -1, dp); // call the recursive function to find the length of the longest chain
     }
 };
