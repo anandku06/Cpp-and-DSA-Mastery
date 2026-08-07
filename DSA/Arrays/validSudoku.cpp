@@ -131,3 +131,13 @@ public:
         return true; // if we have checked all the cells and found no duplicates, then the sudoku is valid
     }
 };
+
+/*
+boxes[(i / 3) * 3 + j / 3] -> This expression calculates the index of the 3x3 sub-box in which the current cell (i, j) is located.
+
+Why (i / 3) * 3 + j / 3 works:
+The Sudoku board is divided into 9 sub-boxes, each of size 3x3. The sub-boxes are indexed from 0 to 8, starting from the top-left corner and moving row-wise.
+- (i / 3) gives the row index of the sub-box (0, 1, or 2) because each sub-box spans 3 rows.
+- (j / 3) gives the column index of the sub-box (0, 1, or 2) because each sub-box spans 3 columns.
+- To get a unique index for each sub-box, we multiply the row index by 3 and add the column index. This gives us a single index ranging from 0 to 8 for the 9 sub-boxes.
+*/

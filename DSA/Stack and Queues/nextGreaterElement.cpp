@@ -47,3 +47,41 @@
 // approach: Using a Monotonic Stack
 // Intuition
 // We can use a monotonic stack to keep track of the elements in nums2. The monotonic stack will always be in decreasing order of the values of the elements at those indices. This way, the top of the monotonic stack will always be the index of the maximum element in the current window. As we iterate through nums2, we will pop the indices from the monotonic stack until we find an element that is greater than the current element. The popped indices will have the current element as their next greater element. We will also store the next greater element for each popped index in a hash map. Finally, we will iterate through nums1 and for each element, we will check if it has a next greater element in the hash map. If it does, we will add it to the answer; otherwise, we will add -1 to the answer.
+
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution
+{
+public:
+    vector<int> nextGreaterElement(vector<int> &nums1, vector<int> &nums2)
+    {
+        unordered_map<int, int> nextGreater;
+        stack<int> st;
+
+        for (int num : nums2)
+        {
+            while (!st.empty() && st.top() < num)
+            {
+                nextGreater[st.top()] = num;
+                st.pop();
+            }
+            st.push(num);
+        }
+
+        vector<int> result;
+        for (int num : nums1)
+        {
+            if (nextGreater.find(num) != nextGreater.end())
+            {
+                result.push_back(nextGreater[num]);
+            }
+            else
+            {
+                result.push_back(-1);
+            }
+        }
+
+        return result;
+    }
+};
