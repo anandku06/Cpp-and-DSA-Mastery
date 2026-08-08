@@ -120,3 +120,70 @@ public:
         return ans; // return the maximum sum of a balanced subsequence
     }
 };
+
+// binary search approach
+class Solution
+{
+public:
+    long long maxBalancedSubsequenceSum(vector<int> &nums)
+    {
+        int n = nums.size();
+        vector<long long> sums; // create a vector to store the maximum sum of a balanced subsequence ending at index i
+
+        for (int i = 0; i < n; i++)
+        {
+            auto it = lower_bound(sums.begin(), sums.end(), nums[i] - i); // find the first element in sums that is greater than or equal to nums[i] - i
+
+            if (it == sums.end())
+            {
+                sums.push_back(nums[i] - i); // if no such element is found, add nums[i] - i to sums
+            }
+            else
+            {
+                *it = max(*it, (long long)nums[i] - i); // update the element in sums with the maximum value
+            }
+        }
+    }
+};
+
+// Optimized approach using patient binary search
+// time complexity: O(n log n), bcz of upper_bound
+// space complexity: O(n)
+class Solution
+{
+public:
+    long long maxBalancedSubsequenceSum(vector<int> &nums)
+    {
+        int n = nums.size(); // get the size of the input array
+
+        map<int, long long> mp; // create a map to store the maximum sum of a balanced subsequence ending at nums[i] - i for each index i
+
+        long long ans = LLONG_MIN; // initialize the answer to the minimum possible value
+
+        for (int i = 0; i < n; i++)
+        {
+            auto it = mp.upper_bound(nums[i] - i); // find the first element in mp that is greater than nums[i] - i
+
+            long long currSum = nums[i]; // initialize the current sum with the current element
+
+            if (it != mp.begin()) // check if there is an element in mp that is less than or equal to nums[i] - i
+            {
+                --it;                  // move the iterator to the previous element
+                currSum += it->second; // add the maximum sum of a balanced subsequence ending at nums[i] - i for the previous index
+            }
+
+            mp[nums[i] - i] = max(mp[nums[i] - i], currSum); // update the maximum sum of a balanced subsequence ending at nums[i] - i for the current index
+
+            it = mp.upper_bound(nums[i] - i); // find the first element in mp that is greater than nums[i] - i
+
+            while (it != mp.end() && (*it).second <= currSum) // remove all elements in mp that have a maximum sum less than or equal to the current sum
+            {
+                mp.erase(it++); // erase the element and move the iterator to the next element
+            }
+
+            ans = max(ans, currSum); // update the answer with the maximum sum of a balanced subsequence ending at index i
+        }
+
+        return ans; // return the maximum sum of a balanced subsequence
+    }
+};
