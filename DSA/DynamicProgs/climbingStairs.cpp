@@ -102,3 +102,33 @@ private:
         return memo[n];
     }
 };
+
+// space optimized solution
+class Space_Optimized_Solution
+{
+public:
+    int climbStairs(int n)
+    {
+        // Base cases
+        if (n <= 1)
+            return 1;
+
+        // Initialize two variables to store the number of ways to reach the (n-1)th and (n-2)th steps
+        int first = 1;  // Ways to reach the (n-2)th step
+        int second = 1; // Ways to reach the (n-1)th step
+
+        // Iterate from the 2nd step to the nth step
+        for (int i = 2; i <= n; i++)
+        {
+            // The number of ways to reach the ith step is the sum of the ways to reach the (i-1)th and (i-2)th steps
+            int current = first + second;
+
+            // Update first and second for the next iteration
+            first = second;
+            second = current;
+        }
+
+        // The answer is the number of ways to reach the nth step
+        return second;
+    }
+};

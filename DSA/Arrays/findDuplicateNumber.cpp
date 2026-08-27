@@ -39,11 +39,9 @@
 // Space Complexity: O(1)
 // Intuition: The idea is to use the concept of cycle detection in a linked list. We can treat the array as a linked list where the value at each index points to the next index. Since there is a duplicate number, there will be a cycle in the linked list. We can use Floyd's Tortoise and Hare algorithm to find the entry point of the cycle, which will be the duplicate number.
 
-// How to identify Floyd's Tortoise and Hare algorithm in the code:
-// 1. We have two pointers, one slow (tortoise) and one fast (hare).
-// 2. The slow pointer moves one step at a time, while the fast pointer moves two steps at a time.
-// 3. If there is a cycle, the fast pointer will eventually meet the slow pointer.
-// 4. Once they meet, we can reset one pointer to the start of the array and keep the other pointer at the meeting point. Then, we move both pointers one step at a time until they meet again. The point at which they meet will be the duplicate number.
+// How to identify that Floyd's Tortoise and Hare algorithm has to be used in this problem?
+// 1. The problem states that there is only one repeated number in the array, which means that there is a cycle in the linked list representation of the array.
+// 2. The problem also states that we cannot modify the array and we can only use constant extra space, which means that we cannot use a hash set or a hash map to store the visited elements. Therefore, we need to use a cycle detection algorithm that uses constant space, such as Floyd's Tortoise and Hare algorithm.
 
 #include <bits/stdc++.h>
 using namespace std;

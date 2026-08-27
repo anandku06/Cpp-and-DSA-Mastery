@@ -63,3 +63,35 @@ public:
 };
 
 // why this works : if the left height is less than the right height, then the water trapped will be determined by the left height, and if the left height is greater than or equal to the left max, then we update the left max, otherwise we add the water trapped to the answer, and we move the left pointer to the right, and if the right height is less than or equal to the right max, then we update the right max, otherwise we add the water trapped to the answer, and we move the right pointer to the left.
+
+// alternative approach : we can also use two arrays to store the left max and right max of each element, and then we can calculate the water trapped by taking the minimum of left max and right max - the element itself, and add it to the answer, but this will take O(n) space complexity.
+class Solution
+{
+public:
+    int trap(vector<int> &height)
+    {
+        int n = height.size();
+        vector<int> leftMax(n, 0);
+        vector<int> rightMax(n, 0);
+
+        leftMax[0] = height[0];
+        for (int i = 1; i < n; i++)
+        {
+            leftMax[i] = max(leftMax[i - 1], height[i]);
+        }
+
+        rightMax[n - 1] = height[n - 1];
+        for (int i = n - 2; i >= 0; i--)
+        {
+            rightMax[i] = max(rightMax[i + 1], height[i]);
+        }
+
+        int ans = 0;
+        for (int i = 0; i < n; i++)
+        {
+            ans += min(leftMax[i], rightMax[i]) - height[i];
+        }
+
+        return ans;
+    }
+};
