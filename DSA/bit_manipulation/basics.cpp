@@ -143,3 +143,12 @@ public:
         return count; // return the total count of set bits
     }
 };
+
+// function to get the rightmost set bit of a number
+// approach: use bitwise AND operation with the negative of the number
+// why it works: the negative of a number in two's complement representation flips all the bits and adds 1, so the AND operation will isolate the rightmost set bit.
+// example: n = 12 (binary: 1100), -n = -12 (binary: 0100), n & (-n) = 1100 & 0100 = 0100 (the rightmost set bit)
+int getRightmostSetBit(int n)
+{
+    return n & (-n); // return the rightmost set bit by performing a bitwise AND operation with the negative of n
+}
