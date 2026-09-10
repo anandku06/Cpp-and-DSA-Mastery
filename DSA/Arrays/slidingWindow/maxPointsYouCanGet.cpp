@@ -47,15 +47,15 @@ public:
     int maxScore(vector<int> &cardPoints, int k)
     {
         // Initialize the sum of the left side and the maximum sum
-        int lsum = 0, maxSum = INT_MIN;
+        int lsum = 0;
 
         // Calculate the sum of the first k cards from the left
         for (int i = 0; i < k; i++)
         {
             lsum += cardPoints[i];
-
-            maxSum = max(maxSum, lsum);
         }
+
+        int maxSum = lsum; // Initialize the maximum sum with the sum of the first k cards from the left
 
         // Initialize the right pointer and the sum of the right side
         int right = cardPoints.size() - 1;

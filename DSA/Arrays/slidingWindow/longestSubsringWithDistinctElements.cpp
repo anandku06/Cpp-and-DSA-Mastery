@@ -69,3 +69,77 @@ public:
         return ans;
     }
 };
+
+// Optimization
+// We can optimize the above solution by using a map to store the index of the characters instead of a set. This way, when we encounter a duplicate character, we can directly move the left pointer to the index of the duplicate character + 1 instead of moving it one by one. This will reduce the time complexity from O(n^2) to O(n).
+
+class Solution
+{
+public:
+    int lengthOfLongestSubstring(string s)
+    {
+        int left = 0, right = 0;
+        int ans = 0;
+
+        unordered_map<char, int> mp; // for storing the index of the chars
+
+        // checking for the max window size
+        while (right < s.length())
+        {
+            char c = s[right];
+            // occurence of dup elements in the map
+            if (mp.find(c) != mp.end())
+            {
+                // move left to the index of the duplicate character + 1
+                left = max(left, mp[c] + 1);
+            }
+
+            // update the index of the character
+            mp[c] = right;
+            // update ans with new max len
+            ans = max(ans, right - left + 1);
+
+            // move right for new elem
+            right++;
+        }
+
+        return ans;
+    }
+};
+
+// Space optimization
+// We can further optimize the space complexity by using an array of size 128 (for ASCII characters) instead of a map. This way, we can directly access the index of the character using its ASCII value.
+
+class Solution
+{
+public:
+    int lengthOfLongestSubstring(string s)
+    {
+        int left = 0, right = 0;
+        int ans = 0;
+
+        vector<int> index(128, -1); // for storing the index of the chars
+
+        // checking for the max window size
+        while (right < s.length())
+        {
+            char c = s[right];
+            // occurence of dup elements in the array
+            if (index[c] != -1)
+            {
+                // move left to the index of the duplicate character + 1
+                left = max(left, index[c] + 1);
+            }
+
+            // update the index of the character
+            index[c] = right;
+            // update ans with new max len
+            ans = max(ans, right - left + 1);
+
+            // move right for new elem
+            right++;
+        }
+
+        return ans;
+    }
+};
