@@ -99,7 +99,38 @@ private:
 class Solution
 {
 public:
-    int numSubarraysWithSum(vector<int> &nums, int goal) {
-        int 
+    int numSubarraysWithSum(vector<int> &nums, int goal)
+    {
+        int left = 0, right = 0, prefixZeros = 0, currentSum = 0, result = 0;
+
+        while (right < nums.size())
+        {
+            currentSum += nums[right];
+
+            if (currentSum > goal)
+            {
+                while (currentSum > goal)
+                {
+                    currentSum -= nums[left];
+                    left++;
+                }
+                prefixZeros = 0;
+            }
+
+            if (currentSum == goal)
+            {
+                prefixZeros = 0;
+                while (left <= right && nums[left] == 0)
+                {
+                    prefixZeros++;
+                    left++;
+                }
+                result += prefixZeros + 1; // +1 for the current subarray
+            }
+
+            right++;
+        }
+
+        return result;
     }
 };
