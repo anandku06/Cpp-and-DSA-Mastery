@@ -1,4 +1,28 @@
-# Monotonic DS
+## Stack:
+
+- A stack is a linear data structure that follows the Last In, First Out (LIFO) principle.
+- This means that the last element added to the stack will be the first one to be removed.
+- Stacks are analogous to a stack of plates where you can only add or remove plates from the top.
+- Common operations in a stack include:
+  - Push: Adding an element to the top of the stack.
+  - Pop: Removing the top element from the stack.
+  - Peek/Top: Retrieving the top element without removing it.
+  - Stacks are used in various applications such as reversing a word, backtracking algorithms (like finding a path in a maze), and in the implementation of function calls in recursion.
+
+## Queue:
+
+- A queue is a linear data structure that follows the First In, First Out (FIFO) principle.
+- This means that the first element added to the queue will be the first one to be removed.
+- Queues are similar to a line of people waiting for a service where the first person in line is the first to be served.
+- Common operations in a queue include:
+
+      - Enqueue: Adding an element to the end of the queue.
+      - Dequeue: Removing the front element from the queue.
+      - Front/Peek: Retrieving the front element without removing it.
+
+- Queues are widely used in scenarios like scheduling processes in operating systems, handling requests in web servers, and in breadth-first search algorithms.
+
+## Monotonic DS
 
 - One of the most powerful techniques in solving problems related to stacks and queues is the concept of a monotonic data structure. A monotonic data structure is a data structure that maintains its elements in a specific order, either increasing or decreasing.
 - This allows us to efficiently solve problems that require us to find the next greater or smaller element for each element in an array.
