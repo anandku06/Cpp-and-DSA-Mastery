@@ -4,32 +4,34 @@ using namespace std;
 
 class StackUsingArrays
 {
-    int top = -1; 
+    int top = -1;
     int stack[MAX_SIZE];
 
-    public:
-        void push(int x)
-        {
-            if(top >= MAX_SIZE) cout << "Stack Overflow" << endl;
+public:
+    void push(int x)
+    {
+        if (top >= MAX_SIZE)
+            cout << "Stack Overflow" << endl;
 
-            ++top;
-            stack[top] = x;
-        }
+        ++top;
+        stack[top] = x;
+    }
 
-        int top()
-        {
-            return stack[top];
-        }
+    int top()
+    {
+        return stack[top];
+    }
 
-        void pop()
-        {
-            if(top <= -1) cout << "Stack Underflow" << endl;
+    void pop()
+    {
+        if (top <= -1)
+            cout << "Stack Underflow" << endl;
 
-            --top;
-        }
+        --top;
+    }
 
-        int size()
-        {
-            return (top + 1);
-        }
+    int size()
+    {
+        return (top + 1);
+    }
 };
