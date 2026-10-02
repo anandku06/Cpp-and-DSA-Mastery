@@ -58,4 +58,32 @@ public:
             }
         }
     }
+
+    vector<int> recursiveBubbleSort(vector<int> &arr)
+    {
+        int n = arr.size();
+
+        solve(arr, n);
+
+        return arr;
+    }
+
+    void solve(vector<int> &arr, int n)
+    {
+        // Base case: If the array has 0 or 1 elements, it's already sorted.
+        if (n <= 1)
+            return;
+
+        // Perform one pass of bubble sort for the first 'n' elements.
+        for (int i = 0; i < n - 1; i++)
+        {
+            if (arr[i] > arr[i + 1])
+            {
+                swap(arr[i], arr[i + 1]);
+            }
+        }
+
+        // Recursively call the function to sort the first 'n - 1' elements.
+        solve(arr, n - 1);
+    }
 };
